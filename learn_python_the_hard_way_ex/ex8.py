@@ -1,0 +1,13 @@
+formatter = "%r %r %r %r"
+print formatter % (1, 2, 3, 4)
+print formatter % ("one", "two", "three", "four")
+print formatter % (True, False, False, True)
+print formatter % (formatter, formatter, formatter, formatter)
+print formatter % (
+    "I had this thing.",
+    "That you could type up right",
+    "But it didn't sing.",
+    "So i siad goodnight."
+)
+
+#the strings in "" are printed with ' ' when called through a %r because they are showing that they are strings
