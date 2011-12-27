@@ -39,7 +39,7 @@ You can choose one of the following:
             choose_path (3, 6, 4, 3)
             break
         elif wepon_choice == "Pink Flamingo":
-            choose_path (1,3, 2, 10)
+            choose_path (1, 3, 2, 10)
             break
         else:
             print "That is not a wepon. please type the name like you see above."
@@ -49,13 +49,15 @@ def choose_path(mindam, maxdam, aturns, adam):
 You see a path ahead with a fork in it. Which way do you take, left or right?"""
     while True:
         path_choice = raw_input ("> ")
+        playerhp = 50
+        pturn = 0
         if path_choice == "right":
             print """ As you walk down the path, you all of a sudden see the crazed Dr. Pangloss on his Giant Gurella!
 Dr. Pangloss seems very mad. He wants to fight you!"""
             badhp = 20
             badmindam = 5
             badmaxdam = 10
-            fight (mindam, maxdam, aturns, adam, badhp, badmindam, badmaxdam)
+            fight_one (mindam, maxdam, aturns, adam, playerhp, badhp, badmindam, badmaxdam, pturn)
             break
         elif path_choice == "left":
             simon (mindam, maxdam, aturns, adam)
@@ -63,41 +65,56 @@ Dr. Pangloss seems very mad. He wants to fight you!"""
         else:
             print "please choose a path right or left"
 
-def fight (mindam, maxdam, aturns, adam, badhp, badmindam, badmaxdam):
-    pturn = 0
-    if playerhp > 0 and badhp > 0 and aturns >= pturn:
+def fight_one (mindam, maxdam, aturns, adam, playerhp, badhp, badmindam, badmaxdam, pturn):
+    # the player has 50 hit points overall
+    while True:
+        if playerhp > 0 and badhp > 0 and aturns > pturn:
+            print "You currently have %d HP. Pangloss has %d HP. Do you attack or defend?" % (playerhp, badhp)
+            pmove = raw_input ("attack or defend > ")
+            
+            if pmove == "attack":
+                player_damage = random.randint (mindam, maxdam)
+                print "You do %d points of damage \n" % (player_damage)
+                badhp = badhp - player_damage
+                bad_damage = random.randint (badmindam, badmaxdam)
+                print "He counter strikes and does %d point of damage to you \n" % (bad_damage)
+                playerhp = playerhp - bad_damage
+                pturn = pturn + 1
+                #fight_one (mindam, maxdam, aturns, adam, playerhp, badhp, badmindam, badmaxdam, pturn)
+                #may want to blow out the denfense thing more
+            elif pmove == "defend":
+                print "You defend yourself."
+                pturn = pturn + 1
+                #fight_one (mindam, maxdam, aturns, adam, playerhp, badhp, badmindam, badmaxdam, pturn)
+            #fight_one (mindam, maxdam, aturns, adam, playerhp, badhp, badmindam, badmaxdam, pturn)
+        #player can user their special ability
+        elif playerhp > 0 and badhp > 0 and aturns == pturn:
+            print "you can now use your specal ability!"
+            pmove = raw_input ("use special abiliy, yes or no?> ")
+            if pmove == "yes":
+                player_damage = adam
+                badhp = badhp - player_damage
+                pturn = 0
+                print "You use your abilty and do %d points of damage. NICE!" % (player_damage)
+                #fight_one (mindam, maxdam, aturns, adam, playerhp, badhp, badmindam, badmaxdam, pturn)
+            elif pmove == "no":
+                print "you dont use your ability."
+                pturn = 0
+                #fight_one (mindam, maxdam, aturns, adam, playerhp, badhp, badmindam, badmaxdam, pturn)
+            #fight_one (mindam, maxdam, aturns, adam, playerhp, badhp, badmindam, badmaxdam, pturn)
+        elif playerhp == 0:
+            print "sorry, you died! \n \n"
+            fly_pplanet_start()
+        elif badhp == 0:
+            print "He dies slowly and painfully. nice job!"
+            pythonking(mindam, maxdam, aturns, adam, badhp, badmindam, badmaxdam, pturn)
+        else:
+            print "i dont understand"
         
-#    print """ As you walk down the path, you all of a sudden see the crazed Dr. Pangloss on his Giant Gurella!
-#Dr. Pangloss seems very mad. He wants to fight you!"""
-#    
-##thought about putting in a retreat function, but that seems stupid.
-#    #the stats for the bad guy
-#    panglosshp = 20
-#    panglossmindam = 5
-#    panglossmaxdam = 10
-#    player_turn = 0
-#    #there are three counters that need to go on 1. pangloss hp, if it gets below 20 he dies and the player moves on, 2. Player hp, if that gets below 50, the player dies, 3. If the number of turns gets past the ability thing, the player can use it then goes back to normal fighting
-#    while panglosshp <= 20 and player_turn <= aturns:
-#    # need to create a loop for all of panglosses hp
-#        print "You currently have %d HP. Pangloss has %d HP. Do you attack or defend?" % (playerhp, panglosshp)
-#        pmove = raw_input ("attack or defend > ")
-#        
-#        if pmove == "attack":
-#            player_damamge = random.randint (mindam, maxdam)
-#            print "You do %d points of damage" % (player_damage)
-#            panglosshp = panglosshp - player_damage
-#            pangloss_damage = random.randint (panglossmindam, panglossmaxdam)
-#            print "Pangloss counter strikes and does %d point of damage to you" % (pangloss_damage)
-#            playerhp = 
-#        if pmove == "defend":
-#            
-#        else:
-#                print "not a valid move! please type attack or defend."
-#        print "You can use your ability! Do you want to?"
-#   
 
-#need to do a for loop the number of tunrs untill you want to do your ability
-
+def pythonking (mindam, maxdam, aturns, adam, badhp, badmindam, badmaxdam, pturn):
+    print "you did it! you made it to the python king"
+    
 #Start of the game
 print """Welcome to Python Plant.
 This is a scary game that is all text! WHOO!
@@ -105,8 +122,6 @@ Get ready to have some fun!"""
 
 print "What is your name?"
 user_name = raw_input ("> ")
-# the player has 50 hit points overall
-playerhp = 50
     
 print "Welcome %s" % (user_name)
 fly_pplanet_start ()
